@@ -1,0 +1,55 @@
+{
+  "name": "droedex/ff",
+  "description": "Feature first Engine",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "droedex",
+      "email": "norepl@noreply.com",
+      "homepage": "https://github.com/droedex"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^10.0|^11.0|^12.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^8.0|^9.0",
+    "mockery/mockery": "^1.0",
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^9.0|^10.4|^11.5"
+  },
+  "autoload" : {
+      "psr-4" : {
+          "Droedex\\FF\\": "src/"
+      }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Droedex\\FF\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Droedex\\FF\\FFServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "serve": [
+      "@build",
+      "@php vendor/bin/testbench serve"
+    ],
+    "lint": [
+      "@php vendor/bin/phpstan analyse"
+    ],
+    "test:unit": "@php vendor/bin/phpunit --testsuite unit --testdox",
+    "test:integration": "@php vendor/bin/phpunit --testsuite integration --testdox",
+    "test": [
+      "@test:unit",
+      "@test:integration"
+    ]
+  }
+}
