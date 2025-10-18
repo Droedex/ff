@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Droedex\FF\Tests\Unit;
 
 use Droedex\FF\Enums\FeaturesEnum;
-use Droedex\FF\FeatureSet;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
+use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\FeatureSet\Interfaces\FeatureInterface;
 use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;

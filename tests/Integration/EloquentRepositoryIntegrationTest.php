@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Tests\Integration;
 
+use Droedex\FF\Repository\DTO\RequestDTO;
 use Droedex\FF\Repository\Eloquent\EloquentDTOBuilder;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
 use Illuminate\Database\Schema\Blueprint;
@@ -40,7 +41,10 @@ class EloquentRepositoryIntegrationTest extends TestCase
             ['name' => 'Bob', 'email' => 'bob@example.com'],
         ]);
 
-        $resultDTO = $this->repository->all(['*']);
+        $requestDTO = new RequestDTO();
+        $requestDTO->setLimit(2);
+
+        $resultDTO = $this->repository->all($requestDTO);
 
         $data = $resultDTO->toArray();
 
@@ -58,7 +62,10 @@ class EloquentRepositoryIntegrationTest extends TestCase
             ['name' => 'Charlie', 'email' => 'charlie@example.com'],
         ]);
 
-        $resultDTO = $this->repository->all(['*'], 2);
+        $requestDTO = new RequestDTO();
+        $requestDTO->setLimit(2);
+
+        $resultDTO = $this->repository->all($requestDTO);
 
         $this->assertCount(2, $resultDTO->toArray());
     }

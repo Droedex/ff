@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Droedex\FF\Tests\Integration;
+namespace Droedex\FF\FeatureSet;
 
 use Droedex\FF\Application\FeatureManager;
 use Droedex\FF\FFServiceProvider;
@@ -10,6 +10,7 @@ use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\DTO\RequestDTO;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
 use Droedex\FF\Repository\Exceptions\FeatureNotFoundException;
+use Droedex\FF\Tests\Integration\TestCase;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -50,11 +51,26 @@ class FeatureFirstIntegrationTest extends TestCase
         $featureSet->all($requestDto);
     }
 
-    public function testGetFeatureAllInUserUnit(): void
+
+    public function testCreateUnitFeature()
     {
         $this->initData();
+        $requestDto = new RequestDTO();
+        $data = [
+            ['name' => 'mike', 'email' => 'mike@example.com'],
+        ];
 
-        $this->assertInstanceOf(FeatureManager::class,$this->featureManager);
+        $requestDto->setData($data);
+
+        $featureSet = $this->featureManager->getFeatureSet('users');
+        $result = $featureSet->create($requestDto);
+
+        $this->assertEquals('mike', $result[0]->name);
+    }
+
+    public function testFeatureAllInUserUnit(): void
+    {
+        $this->initData();
 
         $requestDto = new RequestDTO();
 

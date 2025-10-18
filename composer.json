@@ -27,7 +27,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Droedex\\FF\\Tests\\": "tests/"
+      "Droedex\\FF\\Tests\\": "tests/",
+      "Workbench\\App\\": "workbench/app/"
     }
   },
   "extra": {

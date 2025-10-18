@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Droedex\FF\FeatureSet;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
+use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\FeatureSet\Interfaces\FeatureInterface;
 use PHPUnit\Framework\TestCase;
 
