@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Droedex\FF\Tests\Unit;
 
 use Droedex\FF\Application\FeatureSetBuilder;
-use Droedex\FF\FeatureSet;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
+use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\Repository\Interfaces\RepositoryInterface;
 use Droedex\FF\Repository\Interfaces\RepositoryManagerInterface;
 use PHPUnit\Framework\MockObject\Exception;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Application;
 
-use Droedex\FF\FeatureSet;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
+use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\FeatureSet\Interfaces\FeatureSetInterface;
 use Droedex\FF\Repository\Interfaces\RepositoryManagerInterface;
 

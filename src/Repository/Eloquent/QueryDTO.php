@@ -7,7 +7,7 @@ namespace Droedex\FF\Repository\Eloquent;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Illuminate\Support\Collection;
 
-class ResultDTO implements ResultDTOInterface
+class QueryDTO implements ResultDTOInterface
 {
     private Collection $collection;
 

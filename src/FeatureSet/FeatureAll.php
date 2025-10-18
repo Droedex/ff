@@ -12,6 +12,6 @@ class FeatureAll extends BaseFeature implements FeatureInterface
 {
     public function execute(RequestDTOInterface $dataDTO): ResultDTOInterface
     {
-        return $this->repository->all(['*']);
+        return $this->repository->all($dataDTO);
     }
 }

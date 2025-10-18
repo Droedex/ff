@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Repository\Eloquent;
 
+use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\Exceptions\FeatureNotFoundException;
 use Droedex\FF\Repository\Interfaces\RepositoryInterface;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class EloquentRepository implements RepositoryInterface
@@ -20,24 +22,39 @@ class EloquentRepository implements RepositoryInterface
         $this->DTOBuilder = $DTOBuilder;
     }
 
-    public function all(array $columns = ['*'], $limit = 100): ResultDTOInterface
+    public function create(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        try {
+            $modelClassName = ModelResolverHelper::resolve($this->table);
+
+            $modelClassName::create($requestDTO->getData());
+
+        } catch (QueryException $e) {
+            throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
+        }
+
+        return $this->DTOBuilder->executed();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function all(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
             $collection = DB::table($this->table)
-                ->select($columns)
-                ->limit($limit)
+                ->select($requestDTO->getColumns())
+                ->limit($requestDTO->getLimit())
                 ->get();
-        } catch (\Illuminate\Database\QueryException $e) {
+
+        } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
         return $this->DTOBuilder->all($collection);
     }
 
-//    public function store(): Model
-//    {
-//        // TODO: Implement store() method.
-//    }
+
 //
 //    public function listWhere(array $conditions): Collection
 //    {
@@ -63,4 +80,18 @@ class EloquentRepository implements RepositoryInterface
 //    {
 //        // TODO: Implement delete() method.
 //    }
+    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        // TODO: Implement delete() method.
+    }
 }
