@@ -24,4 +24,15 @@ class EloquentDTOBuilder
     {
         return new CommandDto();
     }
+
+    public function read(Collection $collection)
+    {
+        return new QueryDTO($collection);
+    }
+
+
+    public function update(Collection $collection)
+    {
+        return new QueryDTO($collection);
+    }
 }
