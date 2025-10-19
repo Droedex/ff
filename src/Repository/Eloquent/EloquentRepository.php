@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class EloquentRepository implements RepositoryInterface
 {
     private string $table;
+
     private EloquentDTOBuilder $DTOBuilder;
 
     public function __construct(string $table, EloquentDTOBuilder $DTOBuilder)
@@ -22,6 +23,9 @@ class EloquentRepository implements RepositoryInterface
         $this->DTOBuilder = $DTOBuilder;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function create(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
@@ -34,6 +38,51 @@ class EloquentRepository implements RepositoryInterface
         }
 
         return $this->DTOBuilder->executed();
+    }
+
+    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        try {
+            $collection = DB::table($this->table)
+                ->select($requestDTO->getColumns())
+                ->limit($requestDTO->getLimit())
+                ->firstOrFail();
+
+        } catch (QueryException $e) {
+            throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
+        }
+
+        return $this->DTOBuilder->read($collection);
+    }
+
+    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        try {
+            $collection = DB::table($this->table)
+                ->select($requestDTO->getColumns())
+                ->limit($requestDTO->getLimit())
+                ->get();
+
+        } catch (QueryException $e) {
+            throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
+        }
+
+        return $this->DTOBuilder->update($collection);
+    }
+
+    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
+    {
+        try {
+            $id = $requestDTO->getId();
+
+            $collection = DB::table($this->table)
+                ->where('id', $id)
+                ->delete();
+        } catch (QueryException $e) {
+            throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
+        }
+
+        return $this->DTOBuilder->delete($collection);
     }
 
     /**
@@ -80,18 +129,4 @@ class EloquentRepository implements RepositoryInterface
 //    {
 //        // TODO: Implement delete() method.
 //    }
-    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
-    {
-        // TODO: Implement read() method.
-    }
-
-    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
-    {
-        // TODO: Implement delete() method.
-    }
 }
