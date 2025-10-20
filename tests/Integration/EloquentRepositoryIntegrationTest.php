@@ -33,6 +33,12 @@ class EloquentRepositoryIntegrationTest extends TestCase
         $this->repository = new EloquentRepository($this->tableName, $dtoBuilder);
     }
 
+    public function test_update()
+    {
+
+    }
+
+
     /** @test */
     public function it_can_retrieve_all_records_from_the_database(): void
     {

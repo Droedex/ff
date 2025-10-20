@@ -4,6 +4,7 @@ namespace Droedex\FF\Tests\Integration;
 
 use Droedex\FF\FFServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Workbench\App\Models\User;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -35,5 +36,9 @@ abstract class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        if (!class_exists('App\\Models\\User')) {
+            class_alias(User::class, 'App\\Models\\User');
+        }
     }
 }

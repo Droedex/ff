@@ -13,6 +13,8 @@ class RequestDTO implements RequestDTOInterface
 {
     private array $columns = ['*'];
     private int $limit = 180000;
+    private array $data;
+    private int $id;
 
     /**
      * @inheritdoc
@@ -45,5 +47,15 @@ class RequestDTO implements RequestDTOInterface
     public function getData(): array
     {
         return $this->data;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

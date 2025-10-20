@@ -29,30 +29,30 @@ class EloquentRepository implements RepositoryInterface
     public function create(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
-            $modelClassName = ModelResolverHelper::resolve($this->table);
+           $modelClassName = ModelResolverHelper::resolve($this->table);
 
-            $modelClassName::create($requestDTO->getData());
+           $result = $modelClassName::create($requestDTO->getData());
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->executed();
+        return $this->DTOBuilder->create($result);
     }
 
     public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
-            $collection = DB::table($this->table)
+            $stdClass = DB::table($this->table)
                 ->select($requestDTO->getColumns())
-                ->limit($requestDTO->getLimit())
-                ->firstOrFail();
+                ->where('id', $requestDTO->getId())
+                ->first();
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->read($collection);
+        return $this->DTOBuilder->read($stdClass);
     }
 
     public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
@@ -60,8 +60,8 @@ class EloquentRepository implements RepositoryInterface
         try {
             $collection = DB::table($this->table)
                 ->select($requestDTO->getColumns())
-                ->limit($requestDTO->getLimit())
-                ->get();
+                ->where('id', $requestDTO->getId())
+                ->update($requestDTO->getData());
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
@@ -75,16 +75,17 @@ class EloquentRepository implements RepositoryInterface
         try {
             $id = $requestDTO->getId();
 
-            $collection = DB::table($this->table)
+            $stroke = DB::table($this->table)
                 ->where('id', $id)
                 ->delete();
+
+            var_dump($stroke);
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->delete($collection);
+        return $this->DTOBuilder->delete($stroke);
     }
-
     /**
      * @inheritdoc
      */
@@ -102,7 +103,6 @@ class EloquentRepository implements RepositoryInterface
 
         return $this->DTOBuilder->all($collection);
     }
-
 
 //
 //    public function listWhere(array $conditions): Collection
