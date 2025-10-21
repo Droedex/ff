@@ -37,22 +37,21 @@ class EloquentRepository implements RepositoryInterface
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->create($result);
+        return $this->DTOBuilder->create($result->toArray());
     }
 
     public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
-            $stdClass = DB::table($this->table)
+            $data = DB::table($this->table)
                 ->select($requestDTO->getColumns())
                 ->where('id', $requestDTO->getId())
-                ->first();
-
+                ->get()->toArray();
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->read($stdClass);
+        return $this->DTOBuilder->read($data);
     }
 
     public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
@@ -61,7 +60,7 @@ class EloquentRepository implements RepositoryInterface
             $collection = DB::table($this->table)
                 ->select($requestDTO->getColumns())
                 ->where('id', $requestDTO->getId())
-                ->update($requestDTO->getData());
+                ->update($requestDTO->getData())>toArray();
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
@@ -73,18 +72,14 @@ class EloquentRepository implements RepositoryInterface
     public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
     {
         try {
-            $id = $requestDTO->getId();
-
-            $stroke = DB::table($this->table)
-                ->where('id', $id)
+             DB::table($this->table)
+                ->where('id', $requestDTO->getId())
                 ->delete();
-
-            var_dump($stroke);
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->delete($stroke);
+        return $this->DTOBuilder->delete();
     }
     /**
      * @inheritdoc
@@ -101,7 +96,7 @@ class EloquentRepository implements RepositoryInterface
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->all($collection);
+        return $this->DTOBuilder->all($collection->toArray());
     }
 
 //
@@ -125,8 +120,4 @@ class EloquentRepository implements RepositoryInterface
 //        // TODO: Implement update() method.
 //    }
 //
-//    public function delete(int $id): void
-//    {
-//        // TODO: Implement delete() method.
-//    }
 }

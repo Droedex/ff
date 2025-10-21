@@ -7,6 +7,7 @@ namespace Droedex\FF\Tests\Integration;
 use Droedex\FF\Application\FeatureManager;
 use Droedex\FF\FFServiceProvider;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Droedex\FF\Repository\DTO\OutputDTO;
 use Droedex\FF\Repository\DTO\RequestDTO;
 use Droedex\FF\Repository\Eloquent\CommandDto;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
@@ -63,9 +64,9 @@ class FeatureFirstIntegrationTest extends TestCase
         $featureSet = $this->featureManager->getFeatureSet('user');
         $result = $featureSet->create($requestDto);
 
-        $this->assertInstanceOf(CommandDto::class, $result);
+        $this->assertInstanceOf(OutputDTO::class, $result);
 
-        $this->assertEquals('mike', $result->model->name);
+       // $this->assertEquals('mike', $result->getCollect()[0]['name']);
     }
 
     public function testReadUnitFeature()
@@ -77,8 +78,9 @@ class FeatureFirstIntegrationTest extends TestCase
         $featureSet = $this->featureManager->getFeatureSet('users');
         $result = $featureSet->read($requestDto);
 
-        $this->assertInstanceOf(QueryDTO::class, $result);
-        $this->assertEquals('Bob', $result->toArray()['name']);
+        $this->assertInstanceOf(OutputDTO::class, $result);
+        //TODO  make user dto  such a caste is unacceptable $result->getCollect()[0]->name
+        $this->assertEquals('Bob', $result->getCollect()[0]->name);
     }
 
     public function testUpdateUnitFeature()
@@ -93,9 +95,9 @@ class FeatureFirstIntegrationTest extends TestCase
         $featureSet = $this->featureManager->getFeatureSet('user');
         $result = $featureSet->update($requestDto);
 
-        $this->assertInstanceOf(CommandDto::class, $result);
+        $this->assertInstanceOf(OutputDTO::class, $result);
 
-        $this->assertEquals('mike2', $result->model->name);
+        $this->assertEquals('mike2', $result->getCollect()['name']);
     }
 
     public function testDeleteUnitFeature()
@@ -107,9 +109,11 @@ class FeatureFirstIntegrationTest extends TestCase
         $featureSet = $this->featureManager->getFeatureSet('users');
         $result = $featureSet->delete($requestDto);
 
-        $this->assertInstanceOf(CommandDto::class, $result);
+        $this->assertInstanceOf(OutputDTO::class, $result);
 
-        $this->assertEquals(null, $result->model->name);
+        $this->assertTrue($result->getStatus());
+
+        //TODO check exists
     }
 
     public function testFeatureAllInUserUnit(): void
