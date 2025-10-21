@@ -52,7 +52,7 @@ class EloquentRepositoryIntegrationTest extends TestCase
 
         $resultDTO = $this->repository->all($requestDTO);
 
-        $data = $resultDTO->toArray();
+        $data = $resultDTO->getCollect();
 
         $this->assertCount(2, $data);
         $this->assertEquals('Alice', $data[0]->name);
@@ -73,6 +73,6 @@ class EloquentRepositoryIntegrationTest extends TestCase
 
         $resultDTO = $this->repository->all($requestDTO);
 
-        $this->assertCount(2, $resultDTO->toArray());
+        $this->assertCount(2, $resultDTO->getCollect());
     }
 }

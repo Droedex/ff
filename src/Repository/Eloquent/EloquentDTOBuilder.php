@@ -5,45 +5,41 @@ declare(strict_types=1);
 namespace Droedex\FF\Repository\Eloquent;
 
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
-use Droedex\FF\Repository\DTO\ResultDTO;
+use Droedex\FF\Repository\DTO\OutputDTO;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use stdClass;
 
+// TODO Temporary
 class EloquentDTOBuilder
 {
-    public function create(Model $model): ResultDTOInterface
+    public function create(array $data): ResultDTOInterface
     {
-        return new CommandDto($model);
+        return new OutputDTO($data);
     }
 
-    public function read(stdClass $stdClass)
+    public function read(array $data)
     {
-        $collection = collect((array) $stdClass);
-        return new QueryDTO($collection);
+        return new OutputDTO($data);
     }
 
+    //TODO not use Model ?
     public function update(Model $model)
     {
-        return new CommandDto($model);
+        $collection = collect((array) $model);
+        return new OutputDTO($collection);
     }
 
-    public function delete(int $stroke): ResultDTO
+    public function delete(): ResultDTOInterface
     {
-        $collection = collect(['id' => $stroke]);
-        return new CommandDto($collection);
+        return new OutputDTO();
     }
 
-    public function all(Collection $collection): ResultDTOInterface
+    public function all(array $collection): ResultDTOInterface
     {
-        return new QueryDTO($collection);
+        return new OutputDTO($collection);
     }
-
 
 //    public function executed(): CommandDto
 //    {
 //        return new CommandDto();
 //    }
-
-
 }
