@@ -8,8 +8,10 @@ use Droedex\FF\Enums\FeaturesEnum;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
 use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\FeatureSet\Interfaces\FeatureInterface;
+use Droedex\FF\Repository\DTO\Interfaces\ParametersDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Droedex\FF\Repository\Interfaces\QueryConfiguratorInterface;
 use Droedex\FF\Repository\Interfaces\RepositoryInterface;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
@@ -22,14 +24,14 @@ class FeatureSetTest extends TestCase
     public function testGetAllInFeatureSet(): void
     {
         $repositoryMock = $this->createMock(RepositoryInterface::class);
-        $requestDTOMock = $this->createMock(RequestDTOInterface::class);
+        $requestDTOMock = $this->createMock(ParametersDTOInterface::class);
         $resultDTOMock = $this->createMock(ResultDTOInterface::class);
         $featureMock = $this->createMock(FeatureInterface::class);
         $factoryMock = $this->createMock(FeatureFactory::class);
 
         $factoryMock->expects($this->once())
             ->method('make')
-            ->with(FeaturesEnum::ALL, $repositoryMock)
+            ->with(FeaturesEnum::List, $repositoryMock)
             ->willReturn($featureMock);
 
         $featureMock->expects($this->once())
@@ -39,7 +41,7 @@ class FeatureSetTest extends TestCase
 
         $featureSet = new FeatureSet($factoryMock, $repositoryMock);
 
-        $result = $featureSet->all($requestDTOMock);
+        $result = $featureSet->list($requestDTOMock);
 
         $this->assertSame($resultDTOMock, $result);
     }

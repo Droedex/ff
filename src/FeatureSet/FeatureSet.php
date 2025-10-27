@@ -7,6 +7,7 @@ namespace Droedex\FF\FeatureSet;
 use Droedex\FF\Enums\FeaturesEnum;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
 use Droedex\FF\FeatureSet\Interfaces\FeatureSetInterface;
+use Droedex\FF\Repository\DTO\Interfaces\ParametersDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\Interfaces\RepositoryInterface;
@@ -22,35 +23,35 @@ class FeatureSet implements FeatureSetInterface
         $this->repository = $repository;
     }
 
-    public function execute(FeaturesEnum $feature, RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function execute(FeaturesEnum $feature, ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
         $feature = $this->featureFactory->make($feature, $this->repository);
 
-        return $feature->execute($requestDTO);
+        return $feature->execute($parametersDTO);
     }
 
-    public function create(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function create(ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::CREATE, $requestDTO);
+        return $this->execute(FeaturesEnum::CREATE, $parametersDTO);
     }
 
-    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function read(ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::READ,$requestDTO);
+        return $this->execute(FeaturesEnum::READ,$parametersDTO);
     }
 
-    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function update(ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::UPDATE, $requestDTO);
+        return $this->execute(FeaturesEnum::UPDATE, $parametersDTO);
     }
 
-    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function delete(ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::DELETE, $requestDTO);
+        return $this->execute(FeaturesEnum::DELETE, $parametersDTO);
     }
 
-    public function all(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function list(ParametersDTOInterface $parametersDTO): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::ALL,$requestDTO);
+        return $this->execute(FeaturesEnum::List,$parametersDTO);
     }
 }

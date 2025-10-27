@@ -20,6 +20,8 @@ interface RequestDTOInterface
     public function getLimit(): int;
 
 
+    public function getOffset(): int;
+
     /**
      * Get post data
      *

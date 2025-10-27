@@ -4,30 +4,42 @@ namespace Droedex\FF\Repository\Interfaces;
 
 use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Exception;
 
 interface RepositoryInterface
 {
     /**
      * Create item
      *
-     * @param RequestDTOInterface $requestDTO
+     * @param CommandConfiguratorInterface $commandConfigurator
      *
      * @return ResultDTOInterface
+     *
+     * @throws Exception
      */
-    public function create(RequestDTOInterface $requestDTO): ResultDTOInterface;
+    public function create(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface;
 
-    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface;
+    /**
+     * @throws Exception
+     */
+    public function read(QueryConfiguratorInterface $queryConfigurator): ResultDTOInterface;
 
-    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface;
+    /**
+     * @throws Exception
+     */
+    public function update(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface;
 
-    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface;
+    /**
+     * @throws Exception
+     */
+    public function delete(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface;
 
     /**
      * Get all items
      *
-     * @param RequestDTOInterface $requestDTO
+     * @param QueryConfiguratorInterface $queryConfigurator
      *
      * @return ResultDTOInterface
      */
-    public function all(RequestDTOInterface $requestDTO): ResultDTOInterface;
+    public function List(QueryConfiguratorInterface $queryConfigurator): ResultDTOInterface;
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Repository\Eloquent;
 
-use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\Exceptions\FeatureNotFoundException;
+use Droedex\FF\Repository\Interfaces\CommandConfiguratorInterface;
+use Droedex\FF\Repository\Interfaces\QueryConfiguratorInterface;
 use Droedex\FF\Repository\Interfaces\RepositoryInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -26,77 +27,73 @@ class EloquentRepository implements RepositoryInterface
     /**
      * @inheritdoc
      */
-    public function create(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function create(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface
     {
         try {
-           $modelClassName = ModelResolverHelper::resolve($this->table);
-
-           $result = $modelClassName::create($requestDTO->getData());
+            $result = $commandConfigurator->execute($this->table);
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->create($result->toArray());
+        return $this->DTOBuilder->create($result);
     }
 
-    public function read(RequestDTOInterface $requestDTO): ResultDTOInterface
+    /**
+     * @inheritdoc
+     */
+    public function read(QueryConfiguratorInterface $queryConfigurator): ResultDTOInterface
     {
         try {
-            $data = DB::table($this->table)
-                ->select($requestDTO->getColumns())
-                ->where('id', $requestDTO->getId())
-                ->get()->toArray();
+            $query = DB::table($this->table);
+            $query = $queryConfigurator->query($query);
+
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->read($data);
+        return $this->DTOBuilder->read($query);
     }
 
-    public function update(RequestDTOInterface $requestDTO): ResultDTOInterface
+    /**
+     * @inheritdoc
+     */
+    public function update(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface
     {
         try {
-            $collection = DB::table($this->table)
-                ->select($requestDTO->getColumns())
-                ->where('id', $requestDTO->getId())
-                ->update($requestDTO->getData())>toArray();
+            $result = $commandConfigurator->execute($this->table);
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->update($collection);
+        return $this->DTOBuilder->update($result);
     }
 
-    public function delete(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function delete(CommandConfiguratorInterface $commandConfigurator): ResultDTOInterface
     {
         try {
-             DB::table($this->table)
-                ->where('id', $requestDTO->getId())
-                ->delete();
+            $result = $commandConfigurator->execute($this->table);
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->delete();
+        return $this->DTOBuilder->delete($result);
     }
     /**
      * @inheritdoc
      */
-    public function all(RequestDTOInterface $requestDTO): ResultDTOInterface
+    public function List(QueryConfiguratorInterface $queryConfigurator): ResultDTOInterface
     {
         try {
-            $collection = DB::table($this->table)
-                ->select($requestDTO->getColumns())
-                ->limit($requestDTO->getLimit())
-                ->get();
+            $query = DB::table($this->table);
+            $collection = $queryConfigurator->query($query);
 
         } catch (QueryException $e) {
             throw new FeatureNotFoundException("Feature table [{$this->table}] not found", 0, $e);
         }
 
-        return $this->DTOBuilder->all($collection->toArray());
+        return $this->DTOBuilder->list($collection);
     }
 
 //
