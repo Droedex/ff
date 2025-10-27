@@ -15,6 +15,7 @@ class RequestDTO implements RequestDTOInterface
     private int $limit = 180000;
     private array $data;
     private int $id;
+    private int $offset=0;
 
     /**
      * @inheritdoc
@@ -57,5 +58,10 @@ class RequestDTO implements RequestDTOInterface
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getOffset(): int
+    {
+        return $this->offset;
     }
 }

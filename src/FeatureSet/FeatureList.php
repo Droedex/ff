@@ -6,17 +6,16 @@ namespace Droedex\FF\FeatureSet;
 
 use Droedex\FF\FeatureSet\Interfaces\FeatureInterface;
 use Droedex\FF\Repository\Configurators\ListConfigurator;
-use Droedex\FF\Repository\Configurators\UpdateConfigurator;
 use Droedex\FF\Repository\DTO\Interfaces\ParametersDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\RequestDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 
-class FeatureUpdate extends BaseFeature implements FeatureInterface
+class FeatureList extends BaseFeature implements FeatureInterface
 {
     public function execute(ParametersDTOInterface $queryParametersDTO): ResultDTOInterface
     {
-        $selectQuery = new UpdateConfigurator($queryParametersDTO);
+        $selectQuery = new ListConfigurator($queryParametersDTO);
 
-        return $this->repository->create($selectQuery);
+        return $this->repository->List( $selectQuery);
     }
 }

@@ -8,6 +8,7 @@ use Droedex\FF\Application\FeatureManager;
 use Droedex\FF\FFServiceProvider;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\DTO\OutputDTO;
+use Droedex\FF\Repository\DTO\ParametersDTO;
 use Droedex\FF\Repository\DTO\RequestDTO;
 use Droedex\FF\Repository\Eloquent\CommandDto;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
@@ -44,25 +45,25 @@ class FeatureFirstIntegrationTest extends TestCase
     {
         $this->assertInstanceOf(FeatureManager::class,$this->featureManager);
 
-        $requestDto = new RequestDTO();
+        $parameters = new ParametersDTO();
 
         $featureSet = $this->featureManager->getFeatureSet('unknown');
 
         $this->expectException(FeatureNotFoundException::class);
 
-        $featureSet->all($requestDto);
+        $featureSet->list($parameters);
     }
 
     public function testCreateUnitFeature()
     {
         $this->initData();
-        $requestDto = new RequestDTO();
+        $parameters = new ParametersDTO();
         $data = ['name' => 'mike', 'email' => 'mike@example.com'];
 
-        $requestDto->setData($data);
+        $parameters->setData($data);
 
         $featureSet = $this->featureManager->getFeatureSet('user');
-        $result = $featureSet->create($requestDto);
+        $result = $featureSet->create($parameters);
 
         $this->assertInstanceOf(OutputDTO::class, $result);
 
@@ -72,42 +73,49 @@ class FeatureFirstIntegrationTest extends TestCase
     public function testReadUnitFeature()
     {
         $this->initData();
-        $requestDto = new RequestDTO();
-        $requestDto->setId(2);
+        $parameters = new ParametersDTO();
+        $parameters->setId(1);
 
         $featureSet = $this->featureManager->getFeatureSet('users');
-        $result = $featureSet->read($requestDto);
+        $result = $featureSet->read($parameters);
 
         $this->assertInstanceOf(OutputDTO::class, $result);
         //TODO  make user dto  such a caste is unacceptable $result->getCollect()[0]->name
-        $this->assertEquals('Bob', $result->getCollect()[0]->name);
+        $this->assertEquals('Alice', $result->getCollection()[0]->name);
     }
 
     public function testUpdateUnitFeature()
     {
         $this->initData();
-        $requestDto = new RequestDTO();
-        $requestDto->setId(3);
+
+        $parameters = new ParametersDTO();
+        $parameters->setId(2);
+
+
         $data = ['name' => 'mike2', 'email' => 'mike@example.com2'];
 
-        $requestDto->setData($data);
+        $parameters->setData($data);
 
         $featureSet = $this->featureManager->getFeatureSet('user');
-        $result = $featureSet->update($requestDto);
-
+        $result = $featureSet->update($parameters);
+        //$this->assertTrue($result);
         $this->assertInstanceOf(OutputDTO::class, $result);
 
-        $this->assertEquals('mike2', $result->getCollect()['name']);
+        $featureSet = $this->featureManager->getFeatureSet('users');
+        $read = $featureSet->read($parameters);
+        var_dump($read->getCollection()->first());
+
+        $this->assertEquals('mike2', $read->getCollection()->first()->name);
     }
 
     public function testDeleteUnitFeature()
     {
         $this->initData();
-        $requestDto = new RequestDTO();
-        $requestDto->setId(2);
+        $parameters = new ParametersDTO();
+        $parameters->setId(2);
 
-        $featureSet = $this->featureManager->getFeatureSet('users');
-        $result = $featureSet->delete($requestDto);
+        $featureSet = $this->featureManager->getFeatureSet('user');
+        $result = $featureSet->delete($parameters);
 
         $this->assertInstanceOf(OutputDTO::class, $result);
 
@@ -120,11 +128,10 @@ class FeatureFirstIntegrationTest extends TestCase
     {
         $this->initData();
 
-        $requestDto = new RequestDTO();
-        $requestDto->setLimit(10);
+        $parameters = new ParametersDTO();
 
         $featureSet = $this->featureManager->getFeatureSet('users');
-        $all = $featureSet->all($requestDto);
+        $all = $featureSet->list($parameters);
 
         $this->assertInstanceOf(ResultDTOInterface::class, $all);
     }

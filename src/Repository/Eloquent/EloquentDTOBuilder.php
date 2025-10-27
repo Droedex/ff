@@ -7,33 +7,35 @@ namespace Droedex\FF\Repository\Eloquent;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
 use Droedex\FF\Repository\DTO\OutputDTO;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 // TODO Temporary
 class EloquentDTOBuilder
 {
-    public function create(array $data): ResultDTOInterface
+    //TODO nake  one method after command
+    public function create(bool $bool): ResultDTOInterface
+    {
+        return new OutputDTO(collect([]));
+    }
+
+    public function read(Collection $data)
     {
         return new OutputDTO($data);
     }
 
-    public function read(array $data)
+    //TODO nake  one method after command
+    public function update(bool $bool)
     {
-        return new OutputDTO($data);
+        return new OutputDTO(collect([]));
     }
 
-    //TODO not use Model ?
-    public function update(Model $model)
+    //TODO nake  one method after command
+    public function delete(bool $bool): ResultDTOInterface
     {
-        $collection = collect((array) $model);
-        return new OutputDTO($collection);
+        return new OutputDTO(collect([]));
     }
 
-    public function delete(): ResultDTOInterface
-    {
-        return new OutputDTO();
-    }
-
-    public function all(array $collection): ResultDTOInterface
+    public function list(Collection $collection): ResultDTOInterface
     {
         return new OutputDTO($collection);
     }

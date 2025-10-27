@@ -2,8 +2,10 @@
 
 namespace Droedex\FF\Repository\DTO\Interfaces;
 
+use Illuminate\Support\Collection;
+
 interface ResultDTOInterface
 {
-    public function getCollect(): array;
+    public function getCollection(): Collection;
     public function getStatus(): bool;
 }
