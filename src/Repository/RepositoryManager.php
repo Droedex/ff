@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Repository;
 
+use Droedex\FF\Repository\DTO\ParametersDTO;
 use Droedex\FF\Repository\Eloquent\EloquentDTOBuilder;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
 use Droedex\FF\Repository\Interfaces\CommandRepositoryInterface;
@@ -23,10 +24,10 @@ class RepositoryManager implements RepositoryManagerInterface
         // TODO: Implement getQueryRepository() method.
     }
 
-    public function getRepository(string $unitName): RepositoryInterface
+    public function getRepository(ParametersDTO $parameters): RepositoryInterface
     {
         $eloquentResultDTOBuilder = new EloquentDTOBuilder();
 
-        return new EloquentRepository($unitName, $eloquentResultDTOBuilder);
+        return new EloquentRepository($parameters, $eloquentResultDTOBuilder);
     }
 }

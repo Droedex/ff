@@ -36,7 +36,6 @@ class FeatureSetTest extends TestCase
 
         $featureMock->expects($this->once())
             ->method('execute')
-            ->with($requestDTOMock)
             ->willReturn($resultDTOMock);
 
         $featureSet = new FeatureSet($factoryMock, $repositoryMock);

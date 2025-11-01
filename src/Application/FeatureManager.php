@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Droedex\FF\Application;
 
 use Droedex\FF\FeatureSet\Interfaces\FeatureSetInterface;
-use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Droedex\FF\Repository\DTO\ParametersDTO;
 
 class FeatureManager
 {
@@ -16,9 +16,9 @@ class FeatureManager
         $this->featureSetBuilder = $featureSet;
     }
 
-    public function getFeatureSet(string $unitName): FeatureSetInterface
+    public function getFeatureSet(ParametersDTO $parameters): FeatureSetInterface
     {
-        return $this->featureSetBuilder->build($unitName);
+        return $this->featureSetBuilder->build($parameters);
     }
 
 //    public function contractExecute(ContractDTO $contract): ResultDTOInterface

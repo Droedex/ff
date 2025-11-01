@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Droedex\FF\Repository\Configurators;
+namespace Droedex\FF\Repository\Eloquent\Configurators;
 
+use Droedex\FF\Repository\DTO\ParametersDTO;
 use Droedex\FF\Repository\Interfaces\QueryConfiguratorInterface;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
 
 class ListConfigurator extends BaseConfigurator implements QueryConfiguratorInterface
 {
-    public function prepare(Builder $query): Builder
+    public function prepare(Builder $query, ParametersDTO $parameters): Builder
     {
-        $QueryConfigDTO = $this->parametersDTO;
+        $QueryConfigDTO = $parameters;
         $query->select($QueryConfigDTO->getColumns());
 
         if ($joins = $QueryConfigDTO->getJoins()) {
@@ -44,12 +44,5 @@ class ListConfigurator extends BaseConfigurator implements QueryConfiguratorInte
         }
 
         return $query;
-    }
-
-    public function query(Builder $query): Collection
-    {
-        $query = $this->prepare($query);
-
-        return $query->get();
     }
 }

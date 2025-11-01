@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Droedex\FF\FeatureSet;
 
 use Droedex\FF\FeatureSet\Interfaces\FeatureInterface;
-use Droedex\FF\Repository\Configurators\CreateConfigurator;
-use Droedex\FF\Repository\DTO\Interfaces\ParametersDTOInterface;
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Droedex\FF\Repository\Eloquent\Configurators\CreateConfigurator;
 
 class FeatureCreate extends BaseFeature implements FeatureInterface
 {
-    public function execute(ParametersDTOInterface $queryParametersDTO): ResultDTOInterface
+    /**
+     * @inheritDoc
+     */
+    public function execute(array $data): ResultDTOInterface
     {
-        $selectQuery = new CreateConfigurator($queryParametersDTO);
+        $configurator = new CreateConfigurator();
 
-        return $this->repository->create($selectQuery);
+        return $this->repository->create($configurator, $data);
     }
 }

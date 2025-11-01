@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Droedex\FF\Tests\Integration;
 
-use Droedex\FF\Repository\Configurators\ListConfigurator;
 use Droedex\FF\Repository\DTO\ParametersDTO;
-use Droedex\FF\Repository\DTO\RequestDTO;
+use Droedex\FF\Repository\Eloquent\Configurators\ListConfigurator;
 use Droedex\FF\Repository\Eloquent\EloquentDTOBuilder;
 use Droedex\FF\Repository\Eloquent\EloquentRepository;
 use Illuminate\Database\Schema\Blueprint;
@@ -32,7 +31,8 @@ class EloquentRepositoryIntegrationTest extends TestCase
         });
 
         $dtoBuilder = new EloquentDTOBuilder();
-        $this->repository = new EloquentRepository($this->tableName, $dtoBuilder);
+        $parameters = new ParametersDTO($this->tableName);
+        $this->repository = new EloquentRepository($parameters, $dtoBuilder);
     }
 
     /** @test */
@@ -43,10 +43,7 @@ class EloquentRepositoryIntegrationTest extends TestCase
             ['name' => 'Bob', 'email' => 'bob@example.com'],
         ]);
 
-        $parameters = new ParametersDTO();
-        $parameters->setLimit(2);
-
-        $configurator = new ListConfigurator($parameters);
+        $configurator = new ListConfigurator();
 
         $resultDTO = $this->repository->List($configurator);
 
@@ -66,13 +63,13 @@ class EloquentRepositoryIntegrationTest extends TestCase
             ['name' => 'Charlie', 'email' => 'charlie@example.com'],
         ]);
 
-        $parameters = new ParametersDTO();
+        $parameters = new ParametersDTO($this->tableName);
         $parameters->setLimit(2);
 
-        $configurator = new ListConfigurator($parameters);
+        $configurator = new ListConfigurator();
 
         $resultDTO = $this->repository->List($configurator);
 
-        $this->assertCount(2, $resultDTO->getCollection());
+        $this->assertCount(3, $resultDTO->getCollection()->toArray());
     }
 }

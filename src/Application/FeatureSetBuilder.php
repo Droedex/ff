@@ -7,6 +7,7 @@ namespace Droedex\FF\Application;
 use Droedex\FF\FeatureSet\Builders\FeatureFactory;
 use Droedex\FF\FeatureSet\FeatureSet;
 use Droedex\FF\FeatureSet\Interfaces\FeatureSetInterface;
+use Droedex\FF\Repository\DTO\ParametersDTO;
 use Droedex\FF\Repository\Interfaces\RepositoryManagerInterface;
 
 class FeatureSetBuilder
@@ -20,9 +21,9 @@ class FeatureSetBuilder
         $this->repositoryManager = $repositoryManager;
     }
 
-    public function build(string $unitName): FeatureSetInterface
+    public function build(ParametersDTO $parameters): FeatureSetInterface
     {
-        $repository = $this->repositoryManager->getRepository($unitName);
+        $repository = $this->repositoryManager->getRepository($parameters);
 
         //TODO Repository resolver
         return new FeatureSet($this->featureFactory, $repository);

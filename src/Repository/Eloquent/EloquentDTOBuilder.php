@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Droedex\FF\Repository\Eloquent;
 
 use Droedex\FF\Repository\DTO\Interfaces\ResultDTOInterface;
+use Droedex\FF\Repository\DTO\ListResultDTO;
 use Droedex\FF\Repository\DTO\OutputDTO;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -37,7 +38,7 @@ class EloquentDTOBuilder
 
     public function list(Collection $collection): ResultDTOInterface
     {
-        return new OutputDTO($collection);
+        return new ListResultDTO(true, $collection);
     }
 
 //    public function executed(): CommandDto
