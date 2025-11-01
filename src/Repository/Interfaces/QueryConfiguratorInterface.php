@@ -2,14 +2,14 @@
 
 namespace Droedex\FF\Repository\Interfaces;
 
+use Droedex\FF\Repository\DTO\ParametersDTO;
 use Exception;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
 
 interface QueryConfiguratorInterface
 {
     /**
      * @throws Exception
      */
-    public function query(Builder $query): Collection;
+    public function prepare(Builder $query, ParametersDTO $parameters): Builder;
 }

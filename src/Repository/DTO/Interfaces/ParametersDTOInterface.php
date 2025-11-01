@@ -4,11 +4,13 @@ namespace Droedex\FF\Repository\DTO\Interfaces;
 
 interface ParametersDTOInterface
 {
-    /** @return string[] */
+    public function getUnitName(): string;
     public function getColumns(): array;
 
     /** @return array [['field' => 'created_at', 'direction' => 'desc']] */
     public function getOrderBy(): array;
+
+    public function setOrderBy(string $filed, string $direction): void;
 
     public function getLimit(): int;
 
@@ -16,9 +18,7 @@ interface ParametersDTOInterface
 
     public function getOffset(): int;
 
-    public function setData(array $data): void;
-
-    public function getData(): array;
+    public function setOffset(int $offset): void;
 
     public function getId(): int;
 

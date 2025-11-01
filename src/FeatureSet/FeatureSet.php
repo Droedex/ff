@@ -23,35 +23,41 @@ class FeatureSet implements FeatureSetInterface
         $this->repository = $repository;
     }
 
-    public function execute(FeaturesEnum $feature, ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    /**
+     * @inheritDoc
+     */
+    public function execute(FeaturesEnum $feature, array $data = []): ResultDTOInterface
     {
         $feature = $this->featureFactory->make($feature, $this->repository);
 
-        return $feature->execute($parametersDTO);
+        return $feature->execute($data);
     }
 
-    public function create(ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    /**
+     * @inheritDoc
+     */
+    public function create(array $data): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::CREATE, $parametersDTO);
+        return $this->execute(FeaturesEnum::CREATE, $data);
     }
 
-    public function read(ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    public function read(): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::READ,$parametersDTO);
+        return $this->execute(FeaturesEnum::READ);
     }
 
-    public function update(ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    public function update(array $data): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::UPDATE, $parametersDTO);
+        return $this->execute(FeaturesEnum::UPDATE, $data);
     }
 
-    public function delete(ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    public function delete(): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::DELETE, $parametersDTO);
+        return $this->execute(FeaturesEnum::DELETE);
     }
 
-    public function list(ParametersDTOInterface $parametersDTO): ResultDTOInterface
+    public function list(): ResultDTOInterface
     {
-        return $this->execute(FeaturesEnum::List,$parametersDTO);
+        return $this->execute(FeaturesEnum::List);
     }
 }

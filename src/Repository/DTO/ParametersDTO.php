@@ -20,9 +20,22 @@ class ParametersDTO implements ParametersDTOInterface
 
     private array $orders = [];
 
+    private string $featureName;
+
     private int $id;
 
     private array $data;
+    private string $unitName;
+
+    public function __construct(string $unitName)
+    {
+        $this->unitName = $unitName;
+    }
+
+    public function getUnitName(): string
+    {
+        return $this->unitName;
+    }
 
     public function setData(array $data): void
     {
@@ -54,6 +67,11 @@ class ParametersDTO implements ParametersDTOInterface
         return $this->orders;
     }
 
+    public function setOrderBy(string $field, string $direction): void
+    {
+        $this->orders[] = ['field' => $field, 'direction' => $direction];
+    }
+
     public function getLimit(): int
     {
         return $this->limit;
@@ -69,6 +87,11 @@ class ParametersDTO implements ParametersDTOInterface
         return $this->offset;
     }
 
+    public function setOffset(int $offset): void
+    {
+        $this->offset = $offset;
+    }
+
     public function getJoins(): array
     {
         return $this->joins;
@@ -78,4 +101,5 @@ class ParametersDTO implements ParametersDTOInterface
     {
         return $this->where;
     }
+
 }

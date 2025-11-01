@@ -13,6 +13,7 @@ class OutputDTO implements ResultDTOInterface
     private Collection $collection;
     private int $affected = 0;
     private int $createdId = 0;
+    private int $perPage = 0;
 
     public function __construct(Collection $collection)
     {
